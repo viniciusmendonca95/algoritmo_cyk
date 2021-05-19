@@ -6,7 +6,7 @@ Desenvolvido para a matéria de Automatos Finitos e Deterministicos, ministrada 
 ## Carregando a Gramática
 
 Para carregar o gramática, devemos configurar o arquivo `gramatica.txt`, presente na raíz do projeto.
-A gramática no arquivo de texto deve seguir a seguinte notação `gramatica.txt`:
+A gramática no arquivo de texto deve seguir a seguinte notação:
 
 ```txt
 S => XB | AB
