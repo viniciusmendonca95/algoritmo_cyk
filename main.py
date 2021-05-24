@@ -23,6 +23,7 @@ while True:
         cabecalho('Opção 2 - Testar palavra')
         palavra = input(
             'Informe a palavra que deseja testar: ')
+        gramatica.cyk(palavra)
         sleep(1)
         print()
 

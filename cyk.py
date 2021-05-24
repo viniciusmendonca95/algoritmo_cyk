@@ -1,9 +1,9 @@
 class Gramatica:
     def __init__(self):
         self.regras = self.ler_gramatica()
-        self.terminais = self.get_terminais(self.regras)
-        self.nao_terminais = self.get_nao_terminais(self.regras)
-        self.simbolo_inicial = self.get_simbolo_inicial(self.regras)
+        self.terminais = self.get_terminais()
+        self.nao_terminais = self.get_nao_terminais()
+        self.simbolo_inicial = self.get_simbolo_inicial()
 
     def __repr__(self):
         string = ''
@@ -13,7 +13,6 @@ class Gramatica:
         string += f'Símbolo Inicial: {self.simbolo_inicial}\n'
         return string
 
-
     @staticmethod
     def ler_gramatica():
         with open('gramatica.txt', 'r') as gramatica:
@@ -21,43 +20,48 @@ class Gramatica:
 
             return gramatica
 
-
-    def get_terminais(self, regras):
+    def get_terminais(self):
         terminais = []
 
-        for linha in regras:
+        for linha in self.regras:
             lado_esquerdo, lado_direito = linha.split(" => ")
             lado_direito = lado_direito.split(" | ")
 
             for letra in lado_direito:
-                if(str.islower(letra)):
+                if str.islower(letra):
                     terminais.append([lado_esquerdo, letra])
 
         return terminais
 
-
-    def get_nao_terminais(self, regras):
+    def get_nao_terminais(self):
         nao_terminais = []
 
-        for linha in regras:
+        for linha in self.regras:
             lado_esquerdo, lado_direito = linha.split(" => ")
             lado_direito = lado_direito.split(" | ")
 
             for simbolo in lado_direito:
-                if (str.islower(simbolo) == False):
+                if not str.islower(simbolo):
                     nao_terminais.append([lado_esquerdo, simbolo])
 
         return nao_terminais
 
-
-    def get_simbolo_inicial(self, regras):
-        simbolo_inicial = regras[0][0]
+    def get_simbolo_inicial(self):
+        simbolo_inicial = self.regras[0][0]
 
         return simbolo_inicial
 
+    def cyk(self, palavra):
+        # Iniciando a lista
+        print(palavra)
+        lista = [[] for i in range(len(palavra))]
+        print(lista)
 
-    def cyk(self, terminais, nao_terminais, palavra):
+        # Conversão inicial em não-terminais
+        for i in range(len(palavra)):
+            for terminal in self.terminais:
+                if terminal[1] == palavra[i]:
+                    lista[i].append(terminal[0])
+        print(lista)
+
         return ""
-
-
-
