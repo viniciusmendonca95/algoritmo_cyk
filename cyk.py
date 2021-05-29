@@ -52,16 +52,81 @@ class Gramatica:
         return simbolo_inicial
 
     def cyk(self, palavra):
-        # Iniciando a lista
-        print(palavra)
-        lista = [[] for i in range(len(palavra))]
-        print(lista)
+        nt_chaves = [nao_terminal[0] for nao_terminal in self.nao_terminais]
+        nt_valores = [nao_terminal[1] for nao_terminal in self.nao_terminais]
 
-        # Conversão inicial em não-terminais
+        tabela = [[set() for j in range(len(palavra) - i)] for i in range(len(palavra))]
+
         for i in range(len(palavra)):
             for terminal in self.terminais:
                 if terminal[1] == palavra[i]:
-                    lista[i].append(terminal[0])
-        print(lista)
+                    tabela[0][i].add(terminal[0])
 
-        return ""
+        for i in range(1, len(palavra)):
+            for j in range(len(palavra) - i):
+                for k in range(i):
+                    conjunto_valores = set()
+
+                    for primeira_letra in tabela[k][j]:
+                        for segunda_letra in tabela[i - k - 1][j + k + 1]:
+                            conjunto_valores.add(primeira_letra + segunda_letra)
+                    combinacoes = conjunto_valores
+
+                    for combinacao in combinacoes:
+                        if combinacao in nt_valores:
+                            tabela[i][j].add(
+                                nt_chaves[nt_valores.index(combinacao)])
+
+        if 'S' in tabela[len(palavra) - 1][0]:
+            print(f"{palavra} pertence a gramática")
+            return True
+        else:
+            print(f"{palavra} não pertence a gramática")
+            return False
+
+    def cyk_passo_a_passo(self, palavra):
+        print(f"Palavra: {palavra}")
+
+        nt_chaves = [nao_terminal[0] for nao_terminal in self.nao_terminais]
+        nt_valores = [nao_terminal[1] for nao_terminal in self.nao_terminais]
+
+        tabela = [[set() for j in range(len(palavra) - i)] for i in range(len(palavra))]
+
+        self.imprimir_tabela(tabela, palavra)
+
+        for i in range(len(palavra)):
+            for terminal in self.terminais:
+                if terminal[1] == palavra[i]:
+                    tabela[0][i].add(terminal[0])
+
+        for i in range(1, len(palavra)):
+            self.imprimir_tabela(tabela, palavra)
+            for j in range(len(palavra) - i):
+                for k in range(i):
+                    conjunto_valores = set()
+
+                    for primeira_letra in tabela[k][j]:
+                        for segunda_letra in tabela[i - k - 1][j + k + 1]:
+                            conjunto_valores.add(primeira_letra + segunda_letra)
+                    combinacoes = conjunto_valores
+
+                    for combinacao in combinacoes:
+                        if combinacao in nt_valores:
+                            tabela[i][j].add(
+                                nt_chaves[nt_valores.index(combinacao)])
+        self.imprimir_tabela(tabela, palavra)
+
+        if 'S' in tabela[len(palavra) - 1][0]:
+            print(f"{palavra} pertence a gramática")
+            return True
+        else:
+            print(f"{palavra} não pertence a gramática")
+            return False
+
+    @staticmethod
+    def imprimir_tabela(tabela, palavra):
+        print()
+        for i in range((len(tabela) - 1), -1, -1):
+            print(', '.join(map(str, tabela[i])))
+        print(', '.join(palavra))
+        print()
