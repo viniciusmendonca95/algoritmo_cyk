@@ -77,7 +77,7 @@ class Gramatica:
                             tabela[i][j].add(
                                 nt_chaves[nt_valores.index(combinacao)])
 
-        if 'S' in tabela[len(palavra) - 1][0]:
+        if self.simbolo_inicial in tabela[len(palavra) - 1][0]:
             print(f"{palavra} pertence a gramática")
             return True
         else:
@@ -116,7 +116,7 @@ class Gramatica:
                                 nt_chaves[nt_valores.index(combinacao)])
         self.imprimir_tabela(tabela, palavra)
 
-        if 'S' in tabela[len(palavra) - 1][0]:
+        if self.simbolo_inicial in tabela[len(palavra) - 1][0]:
             print(f"{palavra} pertence a gramática")
             return True
         else:

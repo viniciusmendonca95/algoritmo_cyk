@@ -10,6 +10,7 @@ while True:
 
     resposta = menu(['Imprimir gramática',
                      'Testar palavra',
+                     'Testar palavra mostrando passo a passo',
                      'Sair do sistema'])
 
     if resposta == 1:
@@ -28,6 +29,15 @@ while True:
         print()
 
     elif resposta == 3:
+        print()
+        cabecalho('Opção 4 - Testar palavra mostrando passo a passo')
+        palavra = input(
+            'Informe a palavra que deseja testar: ')
+        gramatica.cyk_passo_a_passo(palavra)
+        sleep(1)
+        print()
+
+    elif resposta == 4:
         print()
         cabecalho('Saindo do sistema... Até logo!')
         sleep(1)
