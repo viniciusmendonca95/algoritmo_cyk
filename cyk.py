@@ -52,31 +52,38 @@ class Gramatica:
         return simbolo_inicial
 
     def cyk(self, palavra):
+        # Lista de chaves e valores de Não terminais
         nt_chaves = [nao_terminal[0] for nao_terminal in self.nao_terminais]
         nt_valores = [nao_terminal[1] for nao_terminal in self.nao_terminais]
 
+        # Criação da tabela usada no CYK com estruturas de conjunto de valores set()
         tabela = [[set() for j in range(len(palavra) - i)] for i in range(len(palavra))]
 
+        # Verificação se a letra da palavra estiver em um dos terminais. Se sim, adiciona o terminal na tabela (base da tabela)
         for i in range(len(palavra)):
             for terminal in self.terminais:
                 if terminal[1] == palavra[i]:
                     tabela[0][i].add(terminal[0])
 
+        # Criação de um conjunto de valores set() que vão agrupar os conjuntos de dados que entrarão na tabela
         for i in range(1, len(palavra)):
             for j in range(len(palavra) - i):
                 for k in range(i):
                     conjunto_valores = set()
 
+                    # Combinação dos valores na tabela, adicionando os resultados em um conjunto de valores set()
                     for primeira_letra in tabela[k][j]:
                         for segunda_letra in tabela[i - k - 1][j + k + 1]:
                             conjunto_valores.add(primeira_letra + segunda_letra)
                     combinacoes = conjunto_valores
 
+                    # Verificação se esse conjunto de valores set() está dentro da lista de não terminais (valores), se sim adicionaremos sua chave na tabela. (preenchimento da tabela)
                     for combinacao in combinacoes:
                         if combinacao in nt_valores:
                             tabela[i][j].add(
                                 nt_chaves[nt_valores.index(combinacao)])
 
+        # Verificação do topo da tabela. Se no topo for encontrado o símbolo inicial, a palavra pertence a gramática. Caso contrário, a palavra não pertence a gramática.
         if self.simbolo_inicial in tabela[len(palavra) - 1][0]:
             print(f"{palavra} pertence a gramática")
             return True
